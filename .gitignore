@@ -1,0 +1,35 @@
+# ROMs e conteúdo protegido
+*.sfc
+*.smc
+*.swc
+*.fig
+*.rom
+*.ips
+*.bps
+*.ups
+*.bin
+*.bs
+*.state
+*.state?
+*.zs?
+*.sav
+*.srm
+*.spc
+*.wav
+*.mp3
+*.flac
+
+# Pacotes/arquivos temporários
+*.zip
+*.7z
+*.rar
+*.tmp
+*.log
+*.csv
+.DS_Store
+Thumbs.db
+
+# Ferramentas/build
+build/
+dist/
+.cache/
