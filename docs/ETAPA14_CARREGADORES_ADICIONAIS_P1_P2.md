@@ -10,17 +10,17 @@ Fonte local: `C03CDA_disassembly_bytes.txt`, no arquivo de análise `SFA2_Gizaha
 
 Trecho relevante:
 
-- `$C0:3DED`: `AD C5 07 F0 4F`
-- `$C0:3DF3` em diante: preparação de ponteiros usando o ID P1 `$07A2`, seguida de duas chamadas a `$C0:2889`.
-- `$C0:3E3D`: `AD 45 0A F0 4F`
-- `$C0:3E49` em diante: preparação de ponteiros usando o ID P2 `$0A22`, seguida de duas chamadas a `$C0:2889`.
+- `$C0:3DF1`: `AD C5 07 F0 4F` — início do carregador auxiliar de P1.
+- `$C0:3DF9` em diante: preparação de ponteiros usando o ID P1 `$07A2`, seguida de duas chamadas a `$C0:2889`.
+- `$C0:3E46`: `AD 45 0A F0 4F` — início do carregador auxiliar de P2.
+- `$C0:3E4E` em diante: preparação de ponteiros usando o ID P2 `$0A22`, seguida de duas chamadas a `$C0:2889`.
 
 ## Interpretação direta dos bytes
 
 ### P1
 
-1. Lê `$07C5`.
-2. Se o valor for zero, o desvio relativo `F0 4F` pula o bloco P1 e segue para o teste P2 em `$C0:3E41`.
+1. Começa em `$C0:3DF1` e lê `$07C5`.
+2. Se o valor for zero, o desvio relativo `F0 4F` alcança o RTL de P1 em `$C0:3E45`, retornando ao chamador.
 3. Se não for zero, limpa `$07ED`.
 4. Usa o ID em `$07A2` para indexar as tabelas em `$B7BA/$B7BC` e `$B7F9/$B7FB`.
 5. Prepara os destinos a partir de `$07FA` e `$07FC`, com banco de destino `$7E`.
@@ -28,7 +28,7 @@ Trecho relevante:
 
 ### P2
 
-1. Lê `$0A45`.
+1. Começa em `$C0:3E46` e lê `$0A45`.
 2. Se o valor for zero, o desvio relativo `F0 4F` pula o bloco P2 e alcança seu RTL em `$C0:3E9A`.
 3. Se não for zero, limpa `$0A6D`.
 4. Usa o ID em `$0A22 para indexar as mesmas famílias de tabelas.
