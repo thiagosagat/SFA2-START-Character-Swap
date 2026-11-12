@@ -3,12 +3,12 @@
 ## ROM examinada
 Street Fighter Alpha 2 (USA), 4 MiB, CRC32 `9C59DDFF`, SHA-256 `910a29f834199c63c22beddc749baba746da9922196a553255deade59f4fc127`.
 
-## Achado confirmado: rotina em CPU $C0:76D4 (offset ROM $0076D4)
+## Achado confirmado: rotina em CPU $C0:76D6 (offset ROM $0076D6)
 
 Bytes relevantes:
 
 ```asm
-$C0:76D4  SEP #$20
+$C0:76D6  SEP #$20
 $C0:76D6  REP #$10
 $C0:76D8  LDX #$0096
 $C0:76DB  NOP
@@ -40,7 +40,7 @@ Importante: não confundir:
 
 ## O que ainda NÃO está provado
 
-1. Não foi encontrada chamada literal JSR $76D4 nem JSL $C0:76D4 no ROM.
+1. Não foi encontrada chamada literal JSR $76D4 nem JSL $C0:76D6 no ROM.
 2. Portanto, ainda não sabemos se essa rotina é chamada diretamente, alcançada por fluxo, ou invocada por tabela/ponteiro.
 3. Ainda não foi localizado o código que consome $000C/$000E para decidir ações de personagem.
 4. Não está demonstrado se a rotina é executada uma vez por frame, em qual estado do jogo, nem se é a melhor posição para inserir a troca.
@@ -49,16 +49,16 @@ Importante: não confundir:
 ## Busca estática reproduzível
 
 Na ROM USA foram procuradas as sequências:
-- `20 D4 76` (JSR $76D4): 0 ocorrências.
-- `22 D4 76 C0` (JSL $C0:76D4): 0 ocorrências.
+- `20 D6 76` (JSR $76D6): 0 ocorrências.
+- `22 D4 76 C0` (JSL $C0:76D6): 0 ocorrências.
 - leituras absolutas `AD 19 42` e `AD 1B 42`: 0 ocorrências como instruções isoladas.
-- leitura `AD 18 42` e `AD 1A 42`: encontradas em $0076EA e $0076F0, sob acumulador de 16 bits.
+- leitura `AD 18 42` e `AD 1A 42`: encontradas em $0076EA e $0076EF, sob acumulador de 16 bits.
 
 A ausência dessas chamadas literais não exclui chamadas indiretas, ponteiros ou entrada por fluxo de controle.
 
 ## Próxima investigação
 
-- Localizar o chamador/entrada real da rotina $C0:76D4.
+- Localizar o chamador/entrada real da rotina $C0:76D6.
 - Seguir os valores escritos em $000C/$000E e identificar a camada de edge-detection (botão recém pressionado versus mantido).
 - Encontrar a lógica de seleção de personagem em estado de round ativo e correlacionar com IDs P1 $7E:07A2 e P2 $7E:0A22.
 - Só então desenhar o hook independente P1/P2 para START sem interferir nos demais botões.
