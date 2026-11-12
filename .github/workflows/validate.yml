@@ -1,0 +1,43 @@
+name: Validate project
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Lua compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.4
+
+      - name: Check Lua syntax
+        run: luac5.4 -p tools/bizhawk/SFA2_CAPTURA_BIZHAWK.lua
+
+      - name: Block copyrighted game files and memory dumps
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          blocked = {".sfc", ".smc", ".swc", ".fig", ".rom", ".ips", ".bps", ".ups", ".bin", ".state", ".sav", ".srm", ".spc", ".wav", ".mp3", ".flac"}
+          bad = []
+          for p in Path(".").rglob("*"):
+              if not p.is_file() or ".git" in p.parts:
+                  continue
+              if p.suffix.lower() in blocked:
+                  bad.append(str(p))
+          if bad:
+              print("Arquivos que não devem ser versionados:")
+              print("\n".join(bad))
+              raise SystemExit(1)
+          print("Nenhum arquivo ROM/dump/asset bloqueado encontrado.")
+          PY
