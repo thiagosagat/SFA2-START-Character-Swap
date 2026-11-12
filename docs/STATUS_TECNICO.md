@@ -55,3 +55,34 @@ Os endereços gráficos `$B904` e `$B924` são referências de destino gráfico/
 ## Build
 
 Asar 1.9 foi compilado localmente durante a investigação, mas ainda não há um patch `.asm` de troca pronto para ser montado. O `main.asm` do patch MSU-1 de referência contém dependências de caminhos externos e assets S-DD1; não é uma base de compilação autossuficiente.
+
+
+## Atualização de desenvolvimento — 2026-11-12
+
+### Ferramentas adicionadas ao repositório
+
+- `tools/analyze_wram.py`: compara dois snapshots de WRAM de 128 KiB, lista bytes/regiões alterados e gera CSV com offset WRAM e endereço espelhado da CPU.
+- `tests/test_analyze_wram.py`: verifica detecção de diferenças e rejeição de snapshots com tamanho inválido.
+- `.github/workflows/validate.yml`: automatiza validação de sintaxe Lua, sintaxe Python, testes do analisador e bloqueio de ROMs/patches/dumps no Git.
+- `.gitignore`: ignora ROMs, patches binários, dumps, saves e temporários.
+- `CONTRIBUTING.md` e modelos de Issue: padronizam evidências e revisões técnicas.
+
+### Validação contínua
+
+GitHub Actions executou com sucesso na branch `main`:
+- compilação sintática do Lua com Lua 5.4;
+- compilação sintática do analisador Python;
+- testes unitários do analisador;
+- verificação de arquivos protegidos/dumps.
+
+Esse CI valida a estrutura e as ferramentas auxiliares. **Não valida o comportamento dentro do emulador e não significa que a troca de personagem já funciona.**
+
+### Próxima medição necessária
+
+Executar o capturador Lua em BizHawk e fornecer os dois snapshots de WRAM feitos antes/depois de um único golpe. Em seguida, executar:
+
+```bash
+python tools/analyze_wram.py SFA2_WRAM_ANTES.bin SFA2_WRAM_DEPOIS.bin
+```
+
+Repetir o procedimento para dano em P1 e P2 e com mais de um golpe. Não commitar snapshots completos no repositório; compartilhar apenas para análise controlada.
