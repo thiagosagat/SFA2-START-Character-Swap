@@ -29,7 +29,7 @@ Trecho relevante:
 ### P2
 
 1. Lê `$0A45`.
-2. Se o valor for zero, o desvio relativo `F0 4F` pula o bloco P2 em direção ao final do trecho disponível.
+2. Se o valor for zero, o desvio relativo `F0 4F` pula o bloco P2 e alcança seu RTL em `$C0:3E9A`.
 3. Se não for zero, limpa `$0A6D`.
 4. Usa o ID em `$0A22 para indexar as mesmas famílias de tabelas.
 5. Prepara os destinos a partir de `$0A7A` e `$0A7C`, com banco de destino `$7F`.
@@ -49,7 +49,7 @@ Trecho relevante:
 - Se esses blocos contêm animação, dados de colisão, dados auxiliares ou outra estrutura.
 - Se os sinalizadores são sempre ativos durante uma luta.
 - Se esses dados podem ser recarregados isoladamente sem invalidar ponteiros, objetos ativos ou caches.
-- O fim completo da rotina: o dump disponível termina em `$C0:3E98`, ainda durante a sequência final; não se deve inferir um retorno ou epílogo que não aparece no trecho fornecido.
+- O dump completo do trecho confirma o RTL de P1 em `$C0:3E45` e o RTL de P2 em `$C0:3E9A`; a leitura inicial que dizia que o dump terminava no meio da sequência estava incorreta.
 
 ## Consequência para a troca durante a luta
 
