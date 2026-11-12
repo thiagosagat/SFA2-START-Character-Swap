@@ -26,7 +26,7 @@ Leia [`docs/STATUS_TECNICO.md`](docs/STATUS_TECNICO.md) antes de implementar um 
 
 ## Captura e análise de memória
 
-A pasta [`tools/bizhawk`](tools/bizhawk) contém um script Lua de **somente leitura** para BizHawk. Ele salva duas capturas de WRAM (128 KiB) antes/depois de um golpe. O script ainda precisa ser executado em BizHawk para validar a captura em ambiente real.
+A pasta [`tools/bizhawk`](tools/bizhawk) contém dois scripts Lua de **somente leitura** para BizHawk: `DIAGNOSTICO_BIZHAWK.lua` identifica os nomes de botões e os domínios de memória detectados; `SFA2_CAPTURA_BIZHAWK.lua` salva duas capturas de WRAM (128 KiB) antes/depois de um golpe. Ambos ainda precisam ser executados no emulador para validação em ambiente real. Consulte [`DIAGNOSTICO_BIZHAWK.md`](tools/bizhawk/DIAGNOSTICO_BIZHAWK.md) antes da captura.
 
 Depois de obter `SFA2_WRAM_ANTES.bin` e `SFA2_WRAM_DEPOIS.bin`, use o analisador Python:
 
