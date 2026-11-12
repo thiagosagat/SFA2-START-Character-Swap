@@ -124,3 +124,17 @@ A localização dos bytes de vida não significa que a troca já esteja implemen
 - Referência de hardware: JOY1/JOY2 em `$4218-$421B`, com START no bit 12 da palavra de 16 bits; aguardar o fim do auto-read (`$4212.0=0`) antes de confiar nos dados.
 - Documento: `docs/ETAPA18_AUDITORIA_ENTRADA_START.md`.
 - Nenhum hook de START nem patch funcional foi validado.
+
+## Entrada dos controles — Etapa 19
+
+| Item | Referência | Estado |
+|---|---|---|
+| Captura automática P1 | CPU $C0:76D4, lê palavra $4218-$4219 e grava DP $000C | Confirmado estaticamente |
+| Captura automática P2 | CPU $C0:76D4, lê palavra $421A-$421B e grava DP $000E | Confirmado estaticamente |
+| Espera do auto-read | consulta $4212.0 antes de ler | Confirmado estaticamente |
+| Máscara START | $1000 na palavra completa de cada controle | Confirmado pelo mapa de bits SNES |
+| Chamador/entrada de $C0:76D4 | não localizado | Pendente |
+| Consumidor de DP $000C/$000E | não classificado | Pendente |
+| Hook de troca START | não implementado | Pendente |
+
+A rotina de captura não é, por si só, um hook seguro: ainda falta localizar seu chamador e o consumo dos valores capturados. Ver relatório `ETAPA19_CAPTURA_AUTOMATICA_CONTROLES_P1_P2.md`.
