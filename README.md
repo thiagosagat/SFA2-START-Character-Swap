@@ -24,9 +24,17 @@ Durante uma luta ativa, pressionar **START sozinho** deve trocar o personagem da
 
 Leia [`docs/STATUS_TECNICO.md`](docs/STATUS_TECNICO.md) antes de implementar um patch.
 
-## Captura de memória
+## Captura e análise de memória
 
-A pasta [`tools/bizhawk`](tools/bizhawk) contém um script Lua de **somente leitura** para BizHawk. Ele salva duas capturas de WRAM e um CSV com as diferenças antes/depois de um golpe. O script ainda precisa ser executado em BizHawk para validar a captura em ambiente real.
+A pasta [`tools/bizhawk`](tools/bizhawk) contém um script Lua de **somente leitura** para BizHawk. Ele salva duas capturas de WRAM (128 KiB) antes/depois de um golpe. O script ainda precisa ser executado em BizHawk para validar a captura em ambiente real.
+
+Depois de obter `SFA2_WRAM_ANTES.bin` e `SFA2_WRAM_DEPOIS.bin`, use o analisador Python:
+
+```bash
+python tools/analyze_wram.py SFA2_WRAM_ANTES.bin SFA2_WRAM_DEPOIS.bin
+```
+
+Ele mostra regiões alteradas e gera `SFA2_ANALISE_WRAM.csv`. O relatório **não identifica automaticamente a vida**: é necessário comparar golpes repetidos e capturas de P1/P2 para separar energia de animações, temporizadores e HUD.
 
 O Snes9x comum não possui o menu Lua Console utilizado por este procedimento.
 
@@ -45,10 +53,11 @@ ROM-base de referência (somente identificação/checksum):
 
 ```text
 .
+├── .github/              # validação automática e modelos de Issue
 ├── docs/                 # estado técnico, mapa de memória e plano de testes
 ├── research/             # notas rastreáveis de engenharia reversa
-├── tools/bizhawk/        # script Lua e instruções de captura
-└── .github/ISSUE_TEMPLATE/ # modelo para registrar bugs/testes
+├── tests/                # testes automatizados do analisador
+└── tools/                # captura BizHawk e análise de WRAM
 ```
 
 ## Ferramentas
@@ -61,6 +70,6 @@ ROM-base de referência (somente identificação/checksum):
 
 A análise dos carregadores foi feita a partir do código-fonte distribuído no projeto MSU-1 de Street Fighter Alpha 2 de **gizaha**, baseado no patch original de **PepilloPEV**. O código e os assets de terceiros não são redistribuídos neste repositório. Consulte a fonte original e respeite os termos dos autores: https://www.zeldix.net/t1831-street-fighter-alpha-2
 
-## Regra de qualidade
+## Verificação automática\n\nO GitHub Actions executa a checagem de sintaxe do Lua, testes do analisador Python e bloqueia extensões de ROM, patches e dumps de memória no repositório. Consulte a aba **Actions** para ver o resultado de cada commit.\n\n## Regra de qualidade
 
 Nenhum endereço é considerado confirmado sem evidência reproduzível. Nenhum patch será marcado como funcional sem teste em emulador e validação de P1/P2, energia, round, cronômetro, sprites, animações, golpes e hitboxes.
