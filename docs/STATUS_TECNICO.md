@@ -114,3 +114,13 @@ A localização dos bytes de vida não significa que a troca já esteja implemen
 - Busca bruta por referências aos destinos encontrou candidatos, mas nenhum consumidor foi classificado como código com segurança; é necessário disassembly com M/X.
 - Documento: `docs/ETAPA17_AUDITORIA_PONTEIROS_FLAGS.md`.
 - Nenhum patch funcional foi produzido.
+
+
+## Auditoria de entrada START — Etapa 18 (2026-11-12)
+
+- `$C0:6C04` não foi validado como loop de combate nem como leitor de START. O trecho testa `$00AA/$00AB` ou `$00B0/$00B1` conforme `$1D75`, usando `BIT #$C0`, mas a origem desses bytes ainda não está demonstrada.
+- Busca por JSL literal para `$C0:6C04` não encontrou chamador direto; salto indireto ainda é possível.
+- Referências cruzadas mostram que `$00AA/$00B0` são reutilizados em outros contextos; não assumir equivalência direta com `$4218-$421B`.
+- Referência de hardware: JOY1/JOY2 em `$4218-$421B`, com START no bit 12 da palavra de 16 bits; aguardar o fim do auto-read (`$4212.0=0`) antes de confiar nos dados.
+- Documento: `docs/ETAPA18_AUDITORIA_ENTRADA_START.md`.
+- Nenhum hook de START nem patch funcional foi validado.
