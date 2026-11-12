@@ -104,3 +104,13 @@ Referências:
 Foi adicionado tools/bizhawk/SFA2_MONITOR_VIDA_CONFIRMADA.lua. Ele apenas lê WRAM, monitora $073E e $09BE junto dos IDs $07A2 e $0A22, e grava SFA2_health_monitor.csv. O script precisa ser executado no BizHawk real para confirmar os valores normais e a variação durante dano; o monitor não escreve na memória.
 
 A localização dos bytes de vida não significa que a troca já esteja implementada. Ainda falta descobrir a rotina segura que atualiza os carregadores de moveset/hitboxes durante uma luta sem chamar a inicialização global.
+
+
+## Auditoria adicional — Etapa 17 (2026-11-12)
+
+- Corrigidos os offsets de entrada dos carregadores auxiliares: P1 `$C0:3DF1`, P2 `$C0:3E46`; retornos em `$C0:3E45` e `$C0:3E9A`.
+- Confirmada a preparação dos destinos-base `$6840/$8240` para P1 e `$C800/$E200` para P2, com ajustes por ID em `$C0:B8EC`.
+- Confirmado que `$07C5/$0A45` recebem zeragens, incrementos e atribuições explícitas; não devem ser tratados como booleanos puros sem análise dos consumidores.
+- Busca bruta por referências aos destinos encontrou candidatos, mas nenhum consumidor foi classificado como código com segurança; é necessário disassembly com M/X.
+- Documento: `docs/ETAPA17_AUDITORIA_PONTEIROS_FLAGS.md`.
+- Nenhum patch funcional foi produzido.
