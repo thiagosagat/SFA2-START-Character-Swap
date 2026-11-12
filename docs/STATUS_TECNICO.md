@@ -86,3 +86,21 @@ python tools/analyze_wram.py SFA2_WRAM_ANTES.bin SFA2_WRAM_DEPOIS.bin
 ```
 
 Repetir o procedimento para dano em P1 e P2 e com mais de um golpe. Não commitar snapshots completos no repositório; compartilhar apenas para análise controlada.
+
+
+## Atualização — endereços de vida identificados (2026-11-12)
+
+Os endereços de energia agora têm evidência externa específica para a ROM USA:
+
+- P1: WRAM $7E:073E. Código Action Replay de vida infinita: 7E073E90.
+- P2: WRAM $7E:09BE. Código Action Replay de vida infinita: 7E09BE90.
+
+A base libretro-database lista ambos os códigos para Street Fighter Alpha 2 (USA, Europe). GameHacking.org também identifica a ROM USA com CRC32 9C59DDFF e lista os mesmos endereços. A ROM fornecida para análise tem CRC32 9C59DDFF e SHA-256 910a29f834199c63c22beddc749baba746da9922196a553255deade59f4fc127.
+
+Referências:
+- https://github.com/libretro/libretro-database/blob/master/cht/Nintendo%20-%20Super%20Nintendo%20Entertainment%20System/Street%20Fighter%20Alpha%202%20%28USA%2C%20Europe%29%20%28Action%20Replay%29.cht
+- https://gamehacking.org/game/44609
+
+Foi adicionado tools/bizhawk/SFA2_MONITOR_VIDA_CONFIRMADA.lua. Ele apenas lê WRAM, monitora $073E e $09BE junto dos IDs $07A2 e $0A22, e grava SFA2_health_monitor.csv. O script precisa ser executado no BizHawk real para confirmar os valores normais e a variação durante dano; o monitor não escreve na memória.
+
+A localização dos bytes de vida não significa que a troca já esteja implementada. Ainda falta descobrir a rotina segura que atualiza os carregadores de moveset/hitboxes durante uma luta sem chamar a inicialização global.
