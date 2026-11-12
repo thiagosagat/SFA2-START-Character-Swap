@@ -22,7 +22,9 @@ jobs:
           sudo apt-get install -y lua5.4
 
       - name: Check Lua syntax
-        run: luac5.4 -p tools/bizhawk/SFA2_CAPTURA_BIZHAWK.lua
+        run: |
+          luac5.4 -p tools/bizhawk/SFA2_CAPTURA_BIZHAWK.lua
+          luac5.4 -p tools/bizhawk/DIAGNOSTICO_BIZHAWK.lua
 
       - name: Check Python syntax
         run: python3 -m py_compile tools/analyze_wram.py tests/test_analyze_wram.py
