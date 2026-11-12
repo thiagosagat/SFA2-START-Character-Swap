@@ -31,7 +31,7 @@ Trecho relevante:
 1. Lê `$0A45`.
 2. Se o valor for zero, o desvio relativo `F0 4F` pula o bloco P2 em direção ao final do trecho disponível.
 3. Se não for zero, limpa `$0A6D`.
-4. Usa o ID em `$0A22) para indexar as mesmas famílias de tabelas.
+4. Usa o ID em `$0A22 para indexar as mesmas famílias de tabelas.
 5. Prepara os destinos a partir de `$0A7A` e `$0A7C`, com banco de destino `$7F`.
 6. Faz duas chamadas a `$C0:2889`.
 
