@@ -14,16 +14,15 @@ $C0:76D8  LDX #$0096
 $C0:76DB  NOP
 $C0:76DC  DEX
 $C0:76DD  BNE $76DC
-$C0:76DF  RTS? ; cuidado: sequência segue para espera do auto-read
-$C0:76E0  LDA $4212
-$C0:76E3  AND #$01
-$C0:76E5  BNE $76E0
-$C0:76E7  REP #$30
-$C0:76EA  LDA $4218
-$C0:76ED  STA $000C
-$C0:76F0  LDA $421A
-$C0:76F3  STA $000E
-$C0:76F6  RTS
+$C0:76DF  LDA $4212
+$C0:76E2  AND #$01
+$C0:76E4  BNE $76DF
+$C0:76E6  REP #$30
+$C0:76E8  LDA $4218
+$C0:76EB  STA $000C
+$C0:76EE  LDA $421A
+$C0:76F1  STA $000E
+$C0:76F4  RTS
 ```
 
 A sequência real de bytes no ROM em $0076D4-$0076F6 foi conferida diretamente. O acumulador está em 16 bits nas duas leituras (REP #$30), portanto cada LDA lê o par baixo+alto:
