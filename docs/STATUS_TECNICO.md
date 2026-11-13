@@ -138,3 +138,15 @@ A localização dos bytes de vida não significa que a troca já esteja implemen
 | Hook de troca START | não implementado | Pendente |
 
 A rotina de captura não é, por si só, um hook seguro: ainda falta localizar seu chamador e o consumo dos valores capturados. Ver relatório `ETAPA19_CAPTURA_AUTOMATICA_CONTROLES_P1_P2.md`.
+
+## Auditoria de consumo do joypad — Etapa 20
+
+- Reconfirmados os bytes de $C0:76D6: aguarda $4212.0=0, lê as palavras de $4218/$421A com acumulador 16-bit e salva em DP $000C/$000E.
+- START está no bit 12 ($1000) das palavras capturadas.
+- Busca literal por JSR/JSL/JMP/JML diretos para $C0:76D6: nenhuma ocorrência.
+- Busca de bytes $D6 $76 encontrou candidatos, mas nenhum foi classificado com segurança como ponteiro executável.
+- DP $000C/$000E são reutilizados em muitas regiões; não são buffers exclusivos de input. Contagens brutas de bytes não equivalem a análise semântica.
+- Chamador, frequência por frame, consumidores, edge-detection e estado de combate continuam pendentes.
+- Decisão: não instalar hook em $C0:76D6 até localizar seu contexto de chamada.
+- Relatório: `docs/ETAPA20_AUDITORIA_CONSUMO_JOYPAD.md`.
+- Nenhum patch funcional foi produzido.
