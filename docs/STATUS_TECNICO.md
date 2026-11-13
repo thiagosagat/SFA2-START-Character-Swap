@@ -150,3 +150,13 @@ A rotina de captura não é, por si só, um hook seguro: ainda falta localizar s
 - Decisão: não instalar hook em $C0:76D6 até localizar seu contexto de chamada.
 - Relatório: `docs/ETAPA20_AUDITORIA_CONSUMO_JOYPAD.md`.
 - Nenhum patch funcional foi produzido.
+
+
+## Estudo cruzado — Etapa 21 (2026-11-12)
+
+- O ZIP local do projeto no-chip contém somente READMEs/layout/imagens; não contém o toolkit executável citado em documentação antiga. A página pública indexada de `sdd1sites.py` mostra uma metodologia de localização de escritas nos registradores S-DD1 ($4800-$4807), filtrando dados comprimidos e desassemblando janelas de código. Isso é ferramenta para mapear programação do chip, não um carregador de personagens.
+- O ASM Gizaha `select gouki with select+start.asm` usa $AB (P1) e $B1 (P2) como bytes de “keypresses”, e testa `AND #$30` para Select+Start. Isso fornece um candidato direto para START isolado: máscara $10 nos mesmos bytes, ainda pendente de validação dinâmica e de confirmação de que esses bytes existem/funcionam durante o round.
+- O trecho de seleção em $C0:CA80 altera IDs/flags de seleção; não é hook de combate confirmado.
+- Os hooks $003D33/$003D59/$003DC0/$003DE6 continuam sendo interceptores do fluxo de descompressão, não APIs autônomas.
+- Documento: `docs/ETAPA21_ESTUDO_CRUZADO_SDD1_E_INPUT_GIZAHA.md`.
+- Nenhum hook de START em combate nem patch funcional foi criado.
