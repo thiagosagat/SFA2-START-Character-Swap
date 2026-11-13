@@ -1,0 +1,63 @@
+name: Build headless SNES test runner
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/build-headless-snes.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build-linux-x64:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake libsdl2-dev pkg-config git zip
+
+      - name: Build snesref headless runner
+        run: |
+          git clone --depth 1 https://github.com/RetroPortingToolKit/snesrecomp.git /tmp/snesrecomp
+          cmake -S /tmp/snesrecomp/tools/snesref -B /tmp/snesref-build -DCMAKE_BUILD_TYPE=Release
+          cmake --build /tmp/snesref-build --parallel 2
+
+      - name: Build Snes9x libretro core
+        run: |
+          git clone --depth 1 https://github.com/libretro/snes9x.git /tmp/snes9x
+          make -C /tmp/snes9x/libretro platform=unix -j2
+          test -s /tmp/snes9x/libretro/snes9x_libretro.so
+
+      - name: Assemble portable runtime
+        run: |
+          mkdir -p dist/sfa2-headless
+          cp /tmp/snesref-build/snesref dist/sfa2-headless/
+          cp /tmp/snes9x/libretro/snes9x_libretro.so dist/sfa2-headless/
+          cat > dist/sfa2-headless/README.txt <<'EOF'
+          SFA2 headless test runtime
+          -------------------------
+          Contains the snesref libretro frontend and Snes9x libretro core.
+          No ROM is included. Use only your own legally obtained ROM.
+
+          Headless run example:
+          SNESREF_HEADLESS=1 SNESREF_FRAMES=6000 \
+            SNESREF_WRAM_DUMP=final-wram.bin \
+            ./snesref ./snes9x_libretro.so "/path/to/Street Fighter Alpha 2 (USA).sfc"
+
+          Scripted input is supported through SNESREF_SCRIPT.
+          Per-frame WRAM write tracing is supported through SNESREF_TRACE_FILE.
+          EOF
+          chmod +x dist/sfa2-headless/snesref
+          (cd dist && zip -qr sfa2-headless-linux-x64.zip sfa2-headless)
+          file dist/sfa2-headless/*
+
+      - name: Upload portable runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: sfa2-headless-linux-x64
+          path: dist/sfa2-headless-linux-x64.zip
+          if-no-files-found: error
+          retention-days: 14
