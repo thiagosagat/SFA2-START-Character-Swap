@@ -20,7 +20,7 @@ Durante uma luta ativa, pressionar **START sozinho** deve trocar o personagem da
 - Hooks encontrados no fluxo original de descompressão: offsets ROM `$003D33` (P1 moveset), `$003D59` (P1 hitboxes), `$003DC0` (P2 moveset), `$003DE6` (P2 hitboxes).
 - O carregador usa dados S-DD1 específicos para alguns IDs e fallback para o descompressor original para os demais.
 - A rotina global `$C03CDA` é usada em transições pré-luta e **não deve ser chamada no meio de uma luta**.
-- Os endereços reais de vida atual/máxima ainda não foram confirmados.
+- Endereços candidatos de vida atual identificados por códigos Action Replay para esta ROM: P1 `$7E:073E` e P2 `$7E:09BE`. A variação durante dano ainda precisa de confirmação dinâmica no BizHawk; os valores máximos e a representação completa da energia continuam pendentes.
 
 Leia [`docs/STATUS_TECNICO.md`](docs/STATUS_TECNICO.md) antes de implementar um patch.
 
